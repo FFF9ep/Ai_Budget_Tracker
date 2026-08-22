@@ -10,17 +10,13 @@ const corsOptions = {
 
 const enableCORS = cors(corsOptions);
 
-const setSecurityHeaders = (req, res, next) => {
-  helmet({
-    contentSecurityPolicy: false,
-    frameguard: { action: 'deny' }, 
-    xssFilter: true,  
-    noSniff: true,
-    hsts: { maxAge: 31536000, includeSubDomains: true, preload: true }, 
-    referrerPolicy: { policy: 'strict-origin-when-cross-origin' }, 
-  });
-  
-  next();
-};
+const setSecurityHeaders = helmet({
+  contentSecurityPolicy: false,
+  frameguard: { action: 'deny' }, 
+  xssFilter: true,  
+  noSniff: true,
+  hsts: { maxAge: 31536000, includeSubDomains: true, preload: true }, 
+  referrerPolicy: { policy: 'strict-origin-when-cross-origin' }, 
+});
 
 module.exports = {enableCORS, setSecurityHeaders};

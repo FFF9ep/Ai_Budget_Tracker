@@ -1,8 +1,8 @@
-const HttpError = require('./httpError');
+const HttpError = require('./HttpError');
 
 class NotFoundError extends HttpError {
     constructor(message = 'Resource not found') {
-        super(404, message);
+        super(message, 404);
         this.name = 'NotFoundError';
     } 
 }

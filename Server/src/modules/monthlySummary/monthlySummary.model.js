@@ -49,13 +49,12 @@ module.exports = (sequelize, DataTypes) => {
         },
     },
     {
-        Sequelize,
         modelName: 'MonthlySummary',
         tableName: 'monthly_summaries',
         timestamps: false,
         underscored: true,
     });
-    User.associate = (models) => {
+    MonthlySummary.associate = (models) => {
         MonthlySummary.belongsTo(models.User, {
             foreignKey: 'user_id',
             as: 'summary_user'
