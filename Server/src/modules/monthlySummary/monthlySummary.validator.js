@@ -21,7 +21,7 @@ const createMonthlySummaryValidator = [
   body('ai_summary')
     .optional()
     .isString().withMessage('AI Summary harus berupa teks'),
-  body('ai_recommendation')
+  body('ai_recomendation')
     .optional()
     .isString().withMessage('AI Recommendation harus berupa teks'),
 ];
@@ -51,7 +51,7 @@ const updateMonthlySummaryValidator = [
   body('ai_summary')
     .optional()
     .isString().withMessage('AI Summary harus berupa teks'),
-  body('ai_recommendation')
+  body('ai_recomendation')
     .optional()
     .isString().withMessage('AI Recommendation harus berupa teks'),
 ];

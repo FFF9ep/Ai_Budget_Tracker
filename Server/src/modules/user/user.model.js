@@ -7,18 +7,18 @@ module.exports = (sequelize, DataTypes) => {
         },
         uuid: {
             type: DataTypes.UUID,
-            defaultValue: DataTypes.UUIDV4,
             allowNull: false,
+            defaultValue: DataTypes.UUIDV4,
             unique: true
         },
         name: {
             type: DataTypes.STRING(50),
-            allowNull: false
+            allowNull: false,
         },
         email: {
             type: DataTypes.STRING(50),
             allowNull: false,
-            unique: true,
+            unique: true
         },
         number: {
             type: DataTypes.STRING(50),
@@ -29,32 +29,33 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false
         },
         created_at: {
-            type: DataTypes.DATE,
             allowNull: false,
-            defaultValue: DataTypes.NOW
+            type: DataTypes.DATE,
+            defaultValue: DataTypes.NOW,
         },
         updated_at: {
-            type: DataTypes.DATE,
             allowNull: false,
-            defaultValue: DataTypes.NOW
+            type: DataTypes.DATE,
+            defaultValue: DataTypes.NOW,
         },
-    },
-    {
+    }, {
         sequelize,
         modelName: 'User',
         tableName: 'users',
-        timestamps: false,
-        underscored: true,
+        timestamp: false,
+        underscored: true
     });
+
     User.associate = (models) => {
         User.hasMany(models.Transaction, {
             foreignKey: 'user_id',
-            as: 'transactions'
+            as: 'transaction'
         });
         User.hasMany(models.MonthlySummary, {
             foreignKey: 'user_id',
             as: 'summary_user'
-        });
+        })
     }
+    
     return User;
-};
+}

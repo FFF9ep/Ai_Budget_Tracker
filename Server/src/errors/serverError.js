@@ -1,9 +1,9 @@
 const HttpError = require('./HttpError');
 
 class ServerError extends HttpError {
-    constructor(message = 'Internal Server Error') {
+    constructor(message){
         super(message, 500);
-        this.name = 'ServerError';
+        this.name = "ServerError"
     }
 }
 

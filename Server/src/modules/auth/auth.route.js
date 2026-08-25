@@ -1,24 +1,26 @@
 const express = require('express');
 const router = express.Router();
-const authController = require('./auth.controller');
+const AuthController = require('./auth.controller');
 const asyncErrorHandler = require('../../errors/asyncErrorHandler');
 const { registerValidator, loginValidator } = require('./auth.validator');
-const validateRequest = require('../../middlewares/validation.middleware')
+const validateRequest = require('../../middlewares/validation.middleware');
+const authJWT = require('../../middlewares/auth.middleware');
 
-router.post('/register',
+router.post('/register', 
     registerValidator,
     validateRequest,
-    asyncErrorHandler(authController.register.bind(authController))
-)
+    asyncErrorHandler(AuthController.register.bind(AuthController))
+);
 
-router.post('/login',
+router.post('/login', 
     loginValidator,
     validateRequest,
-    asyncErrorHandler(authController.login.bind(authController))
-)
+    asyncErrorHandler(AuthController.login.bind(AuthController))
+);
 
-router.get('/profile',
-    asyncErrorHandler(authController.register.bind(authController))
+router.get('/profile', 
+    authJWT,
+    asyncErrorHandler(AuthController.profile.bind(AuthController))
 )
 
 module.exports = router;

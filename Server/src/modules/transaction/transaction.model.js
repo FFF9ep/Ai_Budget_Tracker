@@ -12,10 +12,10 @@ module.exports = (sequelize, DataTypes) => {
         amount: {
             type: DataTypes.STRING,
             allowNull: false
-        },   
+        },
         date: {
             type: DataTypes.DATE,
-            allowNull: false
+            allowNull: false,
         },
         note: {
             type: DataTypes.TEXT,
@@ -30,30 +30,25 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false
         },
         created_at: {
-            type: DataTypes.DATE,
             allowNull: false,
-            defaultValue: DataTypes.NOW
+            type: DataTypes.DATE,
+            defaultValue: DataTypes.NOW,
         },
         updated_at: {
-            type: DataTypes.DATE,
             allowNull: false,
-            defaultValue: DataTypes.NOW
+            type: DataTypes.DATE,
+            defaultValue: DataTypes.NOW,
         },
-    },
-    {
+    }, {
         tableName: 'transactions',
-        timestamps: true,
-        underscored: true,
+        timestamp: true,
+        underscored: true
     });
+    
     Transaction.associate = (models) => {
-        Transaction.belongsTo(models.User, {
-            foreignKey: 'user_id',
-            as: 'user'
-        });
-        Transaction.belongsTo(models.Category, {
-            foreignKey: 'category_id',
-            as: 'category'
-        });
+        Transaction.belongsTo(models.User, { foreignKey: 'user_id', as: 'user' });
+        Transaction.belongsTo(models.Category, { foreignKey: 'category_id', as: 'category'});
     };
-    return Transaction;
+    
+    return Transaction
 }

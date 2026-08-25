@@ -1,70 +1,77 @@
 const { User } = require('../../../models');
 const bcrypt = require('bcrypt');
-const BadRequestError = require('../../errors/badRequestError');
-const NotFoundError = require('../../errors/notFoundError');
-const ServerError = require('../../errors/serverError');
-
-// Susun ulang field supaya urutan JSON konsisten & rapi setiap kali dikembalikan
-function formatUser(userInstance) {
-    const { id, uuid, name, email, number, created_at, updated_at } = userInstance.toJSON();
-    return { id, uuid, name, email, number, created_at, updated_at };
-}
+const BadRequestError = require('../../errors/BadRequestError');
+const NotFound = require('../../errors/NotFoundError');
+const ServerError = require('../../errors/ServerError');
 
 class UserService {
     constructor() {
         this.SALT_ROUNDS = 10;
     }
 
-    async getAll(){
-        return await User.findAll({attributes: {exclude: ['password']}});
+    async getAll() {
+        return await User.findAll({ attributes: { exclude: ['password']} });
     }
 
-    async getById(id){
-        return await User.findByPk(id, {attributes: {exclude: ['password']}});
+    async getById(id) {
+        return await User.findByPk(id, { attributes: { exclude: ['password'] } });
     }
 
-    async create(data){
-        const existingUser = await User.findOne({ where: { email: data.email } });
-        if (existingUser) {
-            throw new BadRequestError('User with this email already exists');
+    async create(data) {
+        const existstingUser = await User.findOne({
+            where: {email: data.email}
+        });
+
+        if(existstingUser) {
+            throw new BadRequestError("Email Sudah Terdaftar");
         }
-        const hash = await bcrypt.hash(data.password, this.SALT_ROUNDS);
-        const user = await User.create({ ...data, password: hash });
-        return formatUser(user);
+
+        const hash =  await bcrypt.hash(data.password, this.SALT_ROUNDS);
+
+        const user = await User.create({ ...data, password: hash});
+        const userJson = user.toJSON();
+        delete userJson.password;
+
+        return userJson;
     }
-    async update(id, data){
+
+    async update(id, data) {
         const user = await User.findByPk(id);
         if(!user) return null;
-        
+
         if(data.email && data.email !== user.email){
-            const existingUser = await User.findOne
-            ({ 
-                where: { email: data.email } 
-            });
-            
+            const existingUser = await User.findOne({
+                where: {email: data.email}
+            })
+
             if(existingUser) {
-                throw new BadRequestError('User with this email already exists');
+                throw new BadRequestError("Email Sudah Di pake browww");
             }
         }
-        if(data.password){
+
+        if(data.password) {
             data.password = await bcrypt.hash(data.password, this.SALT_ROUNDS);
         } else {
             delete data.password;
         }
 
         try {
-            await user.update(data, {validate: true});
+            await user.update(data, { validate: true });
         } catch (err) {
             console.error("error", err);
             const message = err.errors?.map(e => e.message) || [err.message];
-            throw new ServerError("Failed to update user: " + message.join(", "));
+            throw new ServerError("Gagal Update user: " + message.join(', '));
         }
 
-        return formatUser(user);
+        const userJson = user.toJSON();
+        delete userJson.password;
+        return userJson;
     }
-    async delete(id){
+
+    async delete(id) {
         const user = await User.findByPk(id);
         if(!user) return null;
+        
         await user.destroy();
         return true;
     }

@@ -7,20 +7,21 @@ module.exports = (sequelize, DataTypes) => {
         },
         month: {
             type: DataTypes.STRING(25),
-            allowNull: false
+            allowNull: false,
         },
         year: {
             type: DataTypes.STRING(4),
-            allowNull: false
+            allowNull: false,
         },
         total_income: {
             type: DataTypes.STRING,
-            allowNull: false,
+            allowNull: false
         },
         total_expense: {
             type: DataTypes.STRING,
-            allowNull: false,
-        },
+            allowNull: false
+ 
+       },
         balance: {
             type: DataTypes.STRING,
             allowNull: false,
@@ -29,7 +30,7 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.TEXT,
             allowNull: true,
         },
-        ai_recommendation: {
+        ai_recomendation: {
             type: DataTypes.TEXT,
             allowNull: true,
         },
@@ -38,27 +39,29 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false
         },
         created_at: {
-            type: DataTypes.DATE,
             allowNull: false,
-            defaultValue: DataTypes.NOW
+            type: DataTypes.DATE,
+            defaultValue: DataTypes.NOW,
         },
         updated_at: {
-            type: DataTypes.DATE,
             allowNull: false,
-            defaultValue: DataTypes.NOW
+            type: DataTypes.DATE,
+            defaultValue: DataTypes.NOW,
         },
-    },
-    {
+    }, {
+        sequelize,
         modelName: 'MonthlySummary',
-        tableName: 'monthly_summaries',
-        timestamps: false,
-        underscored: true,
+        tableName: "monthly_summaries",
+        timestamp: false,
+        underscored: true
     });
+
     MonthlySummary.associate = (models) => {
         MonthlySummary.belongsTo(models.User, {
-            foreignKey: 'user_id',
-            as: 'summary_user'
-        });
+            foreignKey: "user_id",
+            as: "summary_user"
+        })
     }
-    return MonthlySummary;
+
+    return MonthlySummary
 }
